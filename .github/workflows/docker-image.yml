@@ -5,8 +5,8 @@ on:
     types: [published]
 
 jobs:
-  environment: production
   push_to_registries:
+    environment: production
     name: Push Docker image
     runs-on: ubuntu-latest
     permissions:
