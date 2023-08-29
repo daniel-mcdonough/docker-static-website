@@ -3,14 +3,9 @@ name: Docker Image CI
 on:
   push:
     branches: [ "dev" ]
-<<<<<<< HEAD
-  pull_request:
-=======
-  
   pull_request:
     types:
       - opened
->>>>>>> dev
     branches: [ "master" ]
 
 jobs:
