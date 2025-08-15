@@ -6,24 +6,49 @@ on:
   pull_request:
     types:
       - opened
+      - synchronize
     branches: [ "master" ]
 
 jobs:
-
   build:
     environment: dev
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag docker-static-website:test
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: ./Dockerfile
+        tags: docker-static-website:test
+        load: true
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
 
-    - name: Html
+    - name: Create test HTML file
       run: echo "hello" > index.html
 
-    - name: Test Run
-      run: docker run -d -p "3000:3000" -v "./index.html:/home/static/index.html" -d docker-static-website:test
+    - name: Start container
+      run: docker run -d --name test-container -p "3000:3000" -v "./index.html:/home/static/index.html" docker-static-website:test
 
-    - name: Test curl
-      run: curl localhost:3000
+    - name: Wait for container to start
+      run: sleep 2
+
+    - name: Test HTTP response
+      run: |
+        response=$(curl -s localhost:3000)
+        if [ "$response" != "hello" ]; then
+          echo "Test failed: expected 'hello', got '$response'"
+          exit 1
+        fi
+        echo "Test passed: received expected response"
+
+    - name: Cleanup
+      if: always()
+      run: docker stop test-container && docker rm test-container
