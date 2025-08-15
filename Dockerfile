@@ -14,7 +14,7 @@ WORKDIR /busybox
 COPY .config .
 
 # Compile and install busybox
-RUN make oldconfig && make && make install
+RUN yes "" | make oldconfig && make && make install
 
 # Create a non-root user to own the files and run our server
 RUN adduser -D static
