@@ -4,9 +4,9 @@ FROM alpine:3.18.3 AS builder
 RUN apk add gcc musl-dev make perl
 
 # Download busybox sources
-RUN wget https://busybox.net/downloads/busybox-1.36.1.tar.bz2 \
-  && tar xf busybox-1.36.1.tar.bz2 \
-  && mv /busybox-1.36.1 /busybox
+RUN wget https://busybox.net/downloads/busybox-1.37.0.tar.bz2 \
+  && tar xf busybox-1.37.0.tar.bz2 \
+  && mv /busybox-1.37.0 /busybox
 
 WORKDIR /busybox
 
@@ -14,7 +14,7 @@ WORKDIR /busybox
 COPY .config .
 
 # Compile and install busybox
-RUN make && make install
+RUN yes "" | make oldconfig && make && make install
 
 # Create a non-root user to own the files and run our server
 RUN adduser -D static
