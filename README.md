@@ -4,14 +4,14 @@ A very small Docker image (~228KB) to run any static website, based on the [Busy
 
 > If you're using the previous version (1.x, based on *thttpd*), I recommend upgrading since the new version (2.x) comes with a much smaller memory footprint.
 
-For more details, check out [my article](https://lipanski.com/posts/smallest-docker-image-static-website).
+This is a fork of [lipanski/docker-static-website](https://github.com/lipanski/docker-static-website). For more details, check out the [original author's article](https://lipanski.com/posts/smallest-docker-image-static-website).
 
 ## Usage
 
-The image is hosted on [Docker Hub](https://hub.docker.com/r/lipanski/docker-static-website):
+The image is hosted on [Docker Hub](https://hub.docker.com/r/danielmcdonough/docker-static-website) and the [GitHub Container Registry](https://github.com/Daniel-McDonough/docker-static-website/pkgs/container/docker-static-website) (`ghcr.io/daniel-mcdonough/docker-static-website`):
 
 ```dockerfile
-FROM lipanski/docker-static-website:latest
+FROM danielmcdonough/docker-static-website:latest
 
 # Copy your static files
 COPY . .
@@ -34,7 +34,7 @@ Browse to `http://localhost:3000`.
 If you need to configure the server in a different way, you can override the `CMD` line:
 
 ```dockerfile
-FROM lipanski/docker-static-website:latest
+FROM danielmcdonough/docker-static-website:latest
 
 # Copy your static files
 COPY . .
