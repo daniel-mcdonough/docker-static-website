@@ -3,10 +3,14 @@ FROM alpine:3.24.2 AS builder
 # Install all dependencies required for compiling busybox
 RUN apk add gcc musl-dev make perl
 
-# Download busybox sources
-RUN wget https://busybox.net/downloads/busybox-1.38.0.tar.bz2 \
-  && tar xf busybox-1.38.0.tar.bz2 \
-  && mv /busybox-1.38.0 /busybox
+ARG BUSYBOX_VERSION=1.38.0
+ARG BUSYBOX_SHA256=34f9ea6ff8636f2c9241153b9114eefa9e65674a45318ae1ef95bb5f31c53bb2
+
+# Download and verify busybox sources
+RUN wget https://busybox.net/downloads/busybox-${BUSYBOX_VERSION}.tar.bz2 \
+  && echo "${BUSYBOX_SHA256}  busybox-${BUSYBOX_VERSION}.tar.bz2" | sha256sum -c - \
+  && tar xf busybox-${BUSYBOX_VERSION}.tar.bz2 \
+  && mv /busybox-${BUSYBOX_VERSION} /busybox
 
 WORKDIR /busybox
 
