@@ -1,12 +1,12 @@
-FROM alpine:3.18.3 AS builder
+FROM alpine:3.24.2 AS builder
 
 # Install all dependencies required for compiling busybox
 RUN apk add gcc musl-dev make perl
 
 # Download busybox sources
-RUN wget https://busybox.net/downloads/busybox-1.37.0.tar.bz2 \
-  && tar xf busybox-1.37.0.tar.bz2 \
-  && mv /busybox-1.37.0 /busybox
+RUN wget https://busybox.net/downloads/busybox-1.38.0.tar.bz2 \
+  && tar xf busybox-1.38.0.tar.bz2 \
+  && mv /busybox-1.38.0 /busybox
 
 WORKDIR /busybox
 
